@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:ips:reset_sync:1.0
+description: reset_sync ips Block
+
+filesets:
+  rtl:
+    files:
+      - reset_sync.v : {file_type: verilogSource}
+  tb:
+    files:
+      - reset_sync_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - reset_sync.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: reset_sync
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on reset_sync from ips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: reset_sync
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

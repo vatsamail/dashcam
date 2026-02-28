@@ -1,0 +1,11 @@
+flowchart LR
+    CAM[Camera DVP] --> CAP[camera_capture]
+    CAP --> DMA[simple_dma]
+    DMA --> SRAM[simple_sram]
+    CPU[RV32 CPU stub/fw] --> WB[Wishbone-like fabric]
+    WB --> CSR[CSR block]
+    WB --> SRAM
+    DMA --> IRQ[irq_ctrl]
+    IRQ --> CPU
+    DMA --> SD[sdspi_stub]
+    CSR --> IOMUX[iomux]

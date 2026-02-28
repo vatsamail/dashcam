@@ -1,0 +1,2 @@
+# UPF for reset_sync
+create_power_domain PD_RESET_SYNC -elements {reset_sync}

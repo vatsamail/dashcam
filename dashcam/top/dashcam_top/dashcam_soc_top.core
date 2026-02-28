@@ -1,0 +1,24 @@
+CAPI=2:
+
+name: dashcam:top:dashcam_soc_top:1.0
+description: dashcam_soc_top integration top
+
+filesets:
+  rtl:
+    files:
+      - rtl/dashcam_soc_top.sv : {file_type: systemVerilogSource}
+  tb:
+    files:
+      - ../../dv/sim/verilator_smoke/tb_dashcam_smoke.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - dashcam_soc_top.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: dashcam_soc_top
+    sim:
+        <<: *default
+        description: Verilator smoke sim (see dv/sim/verilator_smoke)

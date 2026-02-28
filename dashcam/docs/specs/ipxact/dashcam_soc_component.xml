@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component vendor="org.example" library="dashcam" name="dashcam_soc_top" version="1.0">
+  <description>Top-level SoC component placeholder referencing generated CSR IP-XACT.</description>
+</component>

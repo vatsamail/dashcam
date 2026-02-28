@@ -1,0 +1,2 @@
+# UPF for camera_capture
+create_power_domain PD_CAMERA_CAPTURE -elements {camera_capture}

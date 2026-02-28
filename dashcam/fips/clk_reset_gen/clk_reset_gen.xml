@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+    xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+    version="1.0"
+    vendor="org.opensoc"
+    library="foundation"
+    name="clk_reset_gen"
+>
+    <ipxact:parameters>
+        <ipxact:parameter id="CLK_MUL" value="2"/>
+        <ipxact:parameter id="CLK_DIV" value="1"/>
+    </ipxact:parameters>
+
+    <ipxact:model>
+        <ipxact:ports>
+            <ipxact:port>
+                <ipxact:name>clk_in</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <ipxact:port>
+                <ipxact:name>reset_in</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <ipxact:port>
+                <ipxact:name>clk_out</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>out</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <ipxact:port>
+                <ipxact:name>locked</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>out</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <ipxact:port>
+                <ipxact:name>reset_out</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>out</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+        </ipxact:ports>
+    </ipxact:model>
+
+    <ipxact:fileSets>
+        <ipxact:fileSet name="rtlFiles">
+            <ipxact:file>
+                <ipxact:name>clk_reset_gen.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+        <ipxact:fileSet name="tbFiles">
+            <ipxact:file>
+                <ipxact:name>tb_clk_reset_gen.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

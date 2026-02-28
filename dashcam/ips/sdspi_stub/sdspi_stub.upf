@@ -1,0 +1,2 @@
+# UPF for sdspi_stub
+create_power_domain PD_SDSPI_STUB -elements {sdspi_stub}

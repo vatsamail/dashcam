@@ -1,0 +1,58 @@
+addrmap dashcam_csr {
+    default regwidth = 32;
+
+    reg CTRL @0x00 {
+        sw = rw;
+        field CAM_EN [0] { sw = rw; };
+        field DMA_START [1] { sw = rw; };
+        field SD_EN [2] { sw = rw; };
+        field IRQ_EN [3] { sw = rw; };
+    };
+
+    reg CAM_STATUS @0x04 {
+        sw = ro;
+        field FRAME_COUNT [15:0] { sw = ro; };
+    };
+
+    reg DMA_BASE @0x08 {
+        sw = rw;
+        field BASE [15:0] { sw = rw; };
+    };
+
+    reg DMA_LEN @0x0c {
+        sw = rw;
+        reset = 64;
+        field LEN [15:0] { sw = rw; };
+    };
+
+    reg DMA_STATUS @0x10 {
+        sw = ro;
+        field DONE [0] { sw = ro; };
+        field BYTES [31:16] { sw = ro; };
+    };
+
+    reg IRQ_STATUS @0x14 {
+        sw = ro;
+        field PENDING [0] { sw = ro; };
+    };
+
+    reg IRQ_CLEAR @0x18 {
+        sw = wo;
+        field CLR [0] { sw = wo; };
+    };
+
+    reg IOMUX_SEL @0x1c {
+        sw = rw;
+        field SEL [3:0] { sw = rw; };
+    };
+
+    reg SD_STATUS @0x20 {
+        sw = ro;
+        field WRITES [15:0] { sw = ro; };
+    };
+
+    reg BUILD_INFO @0x24 {
+        sw = ro;
+        field BUILD [31:0] { sw = ro; };
+    };
+};

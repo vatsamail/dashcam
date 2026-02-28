@@ -1,0 +1,9 @@
+[submodule "third_party/picorv32"]
+	path = third_party/picorv32
+	url = https://github.com/YosysHQ/picorv32
+[submodule "third_party/systemrdl-compiler"]
+	path = third_party/systemrdl-compiler
+	url = https://github.com/SystemRDL/systemrdl-compiler
+[submodule "third_party/wb_intercon"]
+	path = third_party/wb_intercon
+	url = https://github.com/olofk/wb_intercon

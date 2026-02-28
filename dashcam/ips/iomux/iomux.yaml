@@ -1,0 +1,14 @@
+iomux:
+  vendor: arm
+  library: dashcam_ip
+  name: iomux
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/IOMUX
+    git:  https://github.com/example/iomux
+    core: iomux.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

@@ -1,0 +1,2 @@
+# UPF for dashcam_soc_top
+create_power_domain PD_SOC_TOP -elements {dashcam_soc_top}

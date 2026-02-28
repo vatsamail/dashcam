@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:clk_reset_gen:1.0
+description: clk_reset_gen fips Block
+
+filesets:
+  rtl:
+    files:
+      - clk_reset_gen.v : {file_type: verilogSource}
+  tb:
+    files:
+      - clk_reset_gen_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - clk_reset_gen.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: clk_reset_gen
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on clk_reset_gen from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

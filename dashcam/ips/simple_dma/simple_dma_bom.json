@@ -1,0 +1,10 @@
+{
+  "name": "simple_dma",
+  "version": "1.0",
+  "license": "MIT",
+  "repository": "https://repo.example.com/simple_dma",
+  "files": [
+    "simple_dma.v",
+    "simple_dma_tb.sv"
+  ]
+}

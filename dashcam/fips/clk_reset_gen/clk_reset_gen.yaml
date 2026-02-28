@@ -1,0 +1,10 @@
+clk_reset_gen:
+  vendor: opensource
+  library: foundation
+  name: clk_reset_gen
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/CLK_RESET
+    git:  https://github.com/example/clk_reset_gen
+  dependencies: {}
+

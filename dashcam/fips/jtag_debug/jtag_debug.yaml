@@ -1,0 +1,11 @@
+jtag_debug:
+  vendor: synopsys
+  library: foundation
+  name: jtag_debug
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/JTAG_DEBUG
+    git:  https://github.com/example/jtag_debug
+
+  dependencies: {}
+

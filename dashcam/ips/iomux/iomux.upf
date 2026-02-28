@@ -1,0 +1,2 @@
+# UPF for iomux
+create_power_domain PD_IOMUX -elements {iomux}

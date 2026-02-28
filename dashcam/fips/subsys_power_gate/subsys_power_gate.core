@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:subsys_power_gate:1.0
+description: subsys_power_gate fips Block
+
+filesets:
+  rtl:
+    files:
+      - subsys_power_gate.v : {file_type: verilogSource}
+  tb:
+    files:
+      - subsys_power_gate_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - subsys_power_gate.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: subsys_power_gate
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on subsys_power_gate from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

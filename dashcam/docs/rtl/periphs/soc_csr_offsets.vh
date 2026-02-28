@@ -1,0 +1,13 @@
+`ifndef SOC_CSR_OFFSETS_VH
+`define SOC_CSR_OFFSETS_VH
+`define CSR_CTRL 8'h00
+`define CSR_CAM_STATUS 8'h04
+`define CSR_DMA_BASE 8'h08
+`define CSR_DMA_LEN 8'h0c
+`define CSR_DMA_STATUS 8'h10
+`define CSR_IRQ_STATUS 8'h14
+`define CSR_IRQ_CLEAR 8'h18
+`define CSR_IOMUX_SEL 8'h1c
+`define CSR_SD_STATUS 8'h20
+`define CSR_BUILD_INFO 8'h24
+`endif

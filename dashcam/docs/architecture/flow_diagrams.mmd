@@ -1,0 +1,29 @@
+flowchart TD
+    subgraph Camera Pipeline
+      A[Frame Start] --> B[Capture Pixels]
+      B --> C[DMA to SRAM]
+      C --> D[IRQ]
+      D --> E[SD Write Path]
+    end
+
+    subgraph Boot Flow
+      B0[Reset] --> B1[Boot ROM Mock]
+      B1 --> B2[Validate FW Hash Mock]
+      B2 --> B3[Init CSRs]
+      B3 --> B4[Run Record Loop]
+    end
+
+    subgraph DFT Flow
+      D0[Test Mode Entry] --> D1[Scan Shift]
+      D1 --> D2[Capture]
+      D2 --> D3[ATPG Analyze]
+      D0 --> D4[MBIST]
+      D4 --> D5[LBIST]
+    end
+
+    subgraph Implementation Flow
+      I0[Lint] --> I1[Synthesis]
+      I1 --> I2[P&R]
+      I2 --> I3[STA]
+      I3 --> I4[Signoff]
+    end

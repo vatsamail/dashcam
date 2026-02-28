@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:axi_interconnect:1.0
+description: axi_interconnect fips Block
+
+filesets:
+  rtl:
+    files:
+      - axi_interconnect.v : {file_type: verilogSource}
+  tb:
+    files:
+      - axi_interconnect_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - axi_interconnect.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: axi_interconnect
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on axi_interconnect from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

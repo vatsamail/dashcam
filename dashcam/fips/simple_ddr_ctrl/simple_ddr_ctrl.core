@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:simple_ddr_ctrl:1.0
+description: simple_ddr_ctrl fips Block
+
+filesets:
+  rtl:
+    files:
+      - simple_ddr_ctrl.v : {file_type: verilogSource}
+  tb:
+    files:
+      - simple_ddr_ctrl_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - simple_ddr_ctrl.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: simple_ddr_ctrl
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on simple_ddr_ctrl from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

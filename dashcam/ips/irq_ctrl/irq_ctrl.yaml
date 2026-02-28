@@ -1,0 +1,14 @@
+irq_ctrl:
+  vendor: arm
+  library: dashcam_ip
+  name: irq_ctrl
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/IRQ_CTRL
+    git:  https://github.com/example/irq_ctrl
+    core: irq_ctrl.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

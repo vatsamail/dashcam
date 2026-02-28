@@ -1,0 +1,10 @@
+{
+  "name": "simple_sram",
+  "version": "1.0",
+  "license": "MIT",
+  "repository": "https://repo.example.com/simple_sram",
+  "files": [
+    "simple_sram.v",
+    "simple_sram_tb.sv"
+  ]
+}

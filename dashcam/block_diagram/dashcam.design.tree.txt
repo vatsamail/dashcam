@@ -1,0 +1,135 @@
+.
+├── block_diagram
+│   └── dashcam.jpeg
+├── dashcam.design.tree.txt
+├── ips
+│   ├── bluetooth_ctrl
+│   │   ├── bluetooth_ctrl.sdc
+│   │   ├── bluetooth_ctrl.upf
+│   │   ├── bluetooth_ctrl.v
+│   │   ├── bluetooth_ctrl.xml
+│   │   ├── bluetooth_ctrl_bom.json
+│   │   └── bluetooth_ctrl_tb.sv
+│   ├── camera_if
+│   │   ├── camera_if.sdc
+│   │   ├── camera_if.upf
+│   │   ├── camera_if.v
+│   │   ├── camera_if.xml
+│   │   ├── camera_if_bom.json
+│   │   └── camera_if_tb.sv
+│   ├── display_if
+│   │   ├── display_if.sdc
+│   │   ├── display_if.upf
+│   │   ├── display_if.v
+│   │   ├── display_if.xml
+│   │   ├── display_if_bom.json
+│   │   └── display_if_tb.sv
+│   ├── movement_detector
+│   │   ├── movement_detector.sdc
+│   │   ├── movement_detector.upf
+│   │   ├── movement_detector.v
+│   │   ├── movement_detector.xml
+│   │   ├── movement_detector_bom.json
+│   │   └── movement_detector_tb.sv
+│   ├── night_vision
+│   │   ├── night_vision.sdc
+│   │   ├── night_vision.upf
+│   │   ├── night_vision.v
+│   │   ├── night_vision.xml
+│   │   ├── night_vision_bom.json
+│   │   └── night_vision_tb.sv
+│   ├── person_detector
+│   │   ├── person_detector.sdc
+│   │   ├── person_detector.upf
+│   │   ├── person_detector.v
+│   │   ├── person_detector.xml
+│   │   ├── person_detector_bom.json
+│   │   └── person_detector_tb.sv
+│   ├── riscv_core
+│   │   ├── riscv_core.sdc
+│   │   ├── riscv_core.upf
+│   │   ├── riscv_core.v
+│   │   ├── riscv_core.xml
+│   │   ├── riscv_core_bom.json
+│   │   └── riscv_core_tb.sv
+│   ├── smoke_detector
+│   │   ├── smoke_detector.sdc
+│   │   ├── smoke_detector.upf
+│   │   ├── smoke_detector.v
+│   │   ├── smoke_detector.xml
+│   │   ├── smoke_detector_bom.json
+│   │   └── smoke_detector_tb.sv
+│   ├── speaker_out
+│   │   ├── speaker_out.sdc
+│   │   ├── speaker_out.upf
+│   │   ├── speaker_out.v
+│   │   ├── speaker_out.xml
+│   │   ├── speaker_out_bom.json
+│   │   └── speaker_out_tb.sv
+│   ├── ssd_controller
+│   │   ├── ssd_controller.sdc
+│   │   ├── ssd_controller.upf
+│   │   ├── ssd_controller.v
+│   │   ├── ssd_controller.xml
+│   │   ├── ssd_controller_bom.json
+│   │   └── ssd_controller_tb.sv
+│   ├── timer_ip
+│   │   ├── timer_ip.sdc
+│   │   ├── timer_ip.upf
+│   │   ├── timer_ip.v
+│   │   ├── timer_ip.xml
+│   │   ├── timer_ip_bom.json
+│   │   └── timer_ip_tb.sv
+│   ├── usb_interface
+│   │   ├── usb_interface.sdc
+│   │   ├── usb_interface.upf
+│   │   ├── usb_interface.v
+│   │   ├── usb_interface.xml
+│   │   ├── usb_interface_bom.json
+│   │   └── usb_interface_tb.sv
+│   └── voice_command_proc
+│       ├── voice_command_proc.sdc
+│       ├── voice_command_proc.upf
+│       ├── voice_command_proc.v
+│       ├── voice_command_proc.xml
+│       ├── voice_command_proc_bom.json
+│       └── voice_command_proc_tb.sv
+├── ss
+│   ├── audio_subsystem
+│   │   ├── audio_subsystem.sdc
+│   │   ├── audio_subsystem.upf
+│   │   ├── audio_subsystem.v
+│   │   ├── audio_subsystem.xml
+│   │   ├── audio_subsystem_bom.json
+│   │   └── audio_subsystem_tb.sv
+│   ├── connectivity_subsystem
+│   │   ├── connectivity_subsystem.sdc
+│   │   ├── connectivity_subsystem.upf
+│   │   ├── connectivity_subsystem.v
+│   │   ├── connectivity_subsystem.xml
+│   │   ├── connectivity_subsystem_bom.json
+│   │   └── connectivity_subsystem_tb.sv
+│   ├── security_subsystem
+│   │   ├── security_subsystem.sdc
+│   │   ├── security_subsystem.upf
+│   │   ├── security_subsystem.v
+│   │   ├── security_subsystem.xml
+│   │   ├── security_subsystem_bom.json
+│   │   └── security_subsystem_tb.sv
+│   └── video_subsystem
+│       ├── video_subsystem.sdc
+│       ├── video_subsystem.upf
+│       ├── video_subsystem.v
+│       ├── video_subsystem.xml
+│       ├── video_subsystem_bom.json
+│       └── video_subsystem_tb.sv
+└── top
+    └── dashcam_top
+        ├── dashcam_top.sdc
+        ├── dashcam_top.upf
+        ├── dashcam_top.v
+        ├── dashcam_top.xml
+        ├── dashcam_top_bom.json
+        └── dashcam_top_tb.sv
+
+23 directories, 110 files

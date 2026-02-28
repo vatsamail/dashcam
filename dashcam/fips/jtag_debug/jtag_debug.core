@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:jtag_debug:1.0
+description: jtag_debug fips Block
+
+filesets:
+  rtl:
+    files:
+      - jtag_debug.v : {file_type: verilogSource}
+  tb:
+    files:
+      - jtag_debug_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - jtag_debug.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: jtag_debug
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on jtag_debug from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

@@ -1,0 +1,6 @@
+// PSS-like illustrative model
+component dashcam_soc_c {
+  action capture_single_frame_a;
+  action continuous_record_a;
+  action error_recovery_a;
+}

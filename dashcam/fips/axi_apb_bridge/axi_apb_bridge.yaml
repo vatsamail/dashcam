@@ -1,0 +1,11 @@
+axi_apb_bridge:
+  vendor: synopsys
+  library: foundation
+  name: axi_apb_bridge
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/APB_BRIDGE
+    git:  https://github.com/example/axi_apb_bridge
+
+  dependencies: {}
+

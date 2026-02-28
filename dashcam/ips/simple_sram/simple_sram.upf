@@ -1,0 +1,2 @@
+# UPF for simple_sram
+create_power_domain PD_SIMPLE_SRAM -elements {simple_sram}

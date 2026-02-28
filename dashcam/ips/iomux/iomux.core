@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:ips:iomux:1.0
+description: iomux ips Block
+
+filesets:
+  rtl:
+    files:
+      - iomux.v : {file_type: verilogSource}
+  tb:
+    files:
+      - iomux_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - iomux.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: iomux
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on iomux from ips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: iomux
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

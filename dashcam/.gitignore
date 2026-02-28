@@ -1,0 +1,11 @@
+_dont_ship/
+.DS_Store
+.venv_imagegen/
+build/
+output/
+tools/
+yard/
+**/reports/
+**/run_files/
+**/obj_dir/
+**/out/

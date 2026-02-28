@@ -1,0 +1,14 @@
+simple_dma:
+  vendor: arm
+  library: dashcam_ip
+  name: simple_dma
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/SIMPLE_DMA
+    git:  https://github.com/example/simple_dma
+    core: simple_dma.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

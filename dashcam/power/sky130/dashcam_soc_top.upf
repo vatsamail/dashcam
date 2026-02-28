@@ -1,0 +1,8 @@
+# Dashcam SoC UPF (Sky130)
+create_power_domain PD_SOC -elements {dashcam_soc_top}
+create_supply_port VDD
+create_supply_port VSS
+create_supply_net VDD
+create_supply_net VSS
+connect_supply_net VDD -ports {VDD}
+connect_supply_net VSS -ports {VSS}

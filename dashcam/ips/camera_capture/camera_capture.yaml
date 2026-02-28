@@ -1,0 +1,14 @@
+camera_capture:
+  vendor: arm
+  library: dashcam_ip
+  name: camera_capture
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/CAMERA_CAPTURE
+    git:  https://github.com/example/camera_capture
+    core: camera_capture.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

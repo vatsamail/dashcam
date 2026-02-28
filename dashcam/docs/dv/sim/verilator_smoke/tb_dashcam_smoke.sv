@@ -1,0 +1,160 @@
+module tb_dashcam_smoke;
+    logic clk;
+    logic rst_n;
+
+    logic wb_cyc;
+    logic wb_stb;
+    logic wb_we;
+    logic [31:0] wb_addr;
+    logic [31:0] wb_wdata;
+    logic [31:0] wb_rdata;
+    logic wb_ack;
+
+    logic cam_valid;
+    logic cam_sof;
+    logic [7:0] cam_pixel;
+    logic irq;
+
+    localparam CSR_BASE = 32'h1000_0000;
+    localparam MEM_BASE = 32'h2000_0000;
+
+    dashcam_soc_top dut (
+        .clk,
+        .rst_n,
+        .wb_cyc,
+        .wb_stb,
+        .wb_we,
+        .wb_addr,
+        .wb_wdata,
+        .wb_rdata,
+        .wb_ack,
+        .cam_valid,
+        .cam_sof,
+        .cam_pixel,
+        .irq
+    );
+
+    initial clk = 0;
+    always #5 clk = ~clk;
+
+    task automatic wb_write(input [31:0] addr, input [31:0] data);
+        begin
+            @(posedge clk);
+            wb_cyc <= 1'b1;
+            wb_stb <= 1'b1;
+            wb_we <= 1'b1;
+            wb_addr <= addr;
+            wb_wdata <= data;
+            do @(posedge clk); while (!wb_ack);
+            wb_cyc <= 1'b0;
+            wb_stb <= 1'b0;
+            wb_we <= 1'b0;
+        end
+    endtask
+
+    task automatic wb_read(input [31:0] addr, output [31:0] data);
+        begin
+            @(posedge clk);
+            wb_cyc <= 1'b1;
+            wb_stb <= 1'b1;
+            wb_we <= 1'b0;
+            wb_addr <= addr;
+            do @(posedge clk); while (!wb_ack);
+            data = wb_rdata;
+            wb_cyc <= 1'b0;
+            wb_stb <= 1'b0;
+        end
+    endtask
+
+    task automatic send_frame(input integer nbytes);
+        integer i;
+        begin
+            cam_valid <= 1'b0;
+            cam_sof <= 1'b0;
+            cam_pixel <= 8'h00;
+            @(posedge clk);
+            for (i = 0; i < nbytes; i = i + 1) begin
+                cam_valid <= 1'b1;
+                cam_sof <= (i == 0);
+                cam_pixel <= i[7:0];
+                @(posedge clk);
+            end
+            cam_valid <= 1'b0;
+            cam_sof <= 1'b0;
+        end
+    endtask
+
+    task automatic dump_ppm;
+        integer fd;
+        integer i;
+        reg [31:0] word;
+        reg [7:0] pix;
+        begin
+            fd = $fopen("out/frame0.ppm", "w");
+            if (!fd) begin
+                $fatal(1, "cannot open ppm output");
+            end
+            $fwrite(fd, "P3\n8 8\n255\n");
+            for (i = 0; i < 64; i = i + 1) begin
+                wb_read(MEM_BASE + (i & ~32'h3), word);
+                case (i[1:0])
+                    2'd0: pix = word[7:0];
+                    2'd1: pix = word[15:8];
+                    2'd2: pix = word[23:16];
+                    default: pix = word[31:24];
+                endcase
+                $fwrite(fd, "%0d %0d %0d\n", pix, pix, pix);
+            end
+            $fclose(fd);
+        end
+    endtask
+
+    reg [31:0] r;
+    initial begin
+        wb_cyc = 0;
+        wb_stb = 0;
+        wb_we = 0;
+        wb_addr = 0;
+        wb_wdata = 0;
+        cam_valid = 0;
+        cam_sof = 0;
+        cam_pixel = 0;
+
+        rst_n = 0;
+        repeat (5) @(posedge clk);
+        rst_n = 1;
+
+        wb_write(CSR_BASE + 32'h08, 32'h0);
+        wb_write(CSR_BASE + 32'h0c, 32'd64);
+        wb_write(CSR_BASE + 32'h1c, 32'h3);
+        wb_write(CSR_BASE + 32'h00, 32'b1101); // cam_en, sd_en, irq_en
+        wb_write(CSR_BASE + 32'h00, 32'b1111); // + dma_start pulse
+
+        send_frame(64);
+
+        repeat (50) @(posedge clk);
+        if (!irq) $fatal(1, "IRQ did not assert");
+
+        wb_read(CSR_BASE + 32'h04, r);
+        if (r[15:0] != 16'd1) $fatal(1, "frame_count mismatch: %0d", r[15:0]);
+
+        wb_read(CSR_BASE + 32'h10, r);
+        if (r[31:16] != 16'd64) $fatal(1, "dma bytes_written mismatch: %0d", r[31:16]);
+
+        wb_read(CSR_BASE + 32'h14, r);
+        if (r[0] != 1'b1) $fatal(1, "irq status missing");
+
+        wb_write(CSR_BASE + 32'h18, 32'h1);
+        repeat (3) @(posedge clk);
+        wb_read(CSR_BASE + 32'h14, r);
+        if (r[0] != 1'b0) $fatal(1, "irq did not clear");
+
+        wb_read(CSR_BASE + 32'h20, r);
+        if (r[15:0] < 16'd1) $fatal(1, "sd write path not invoked");
+
+        dump_ppm();
+
+        $display("SMOKE_PASS frame_count=1 bytes=64 sd_writes=%0d", r[15:0]);
+        $finish;
+    end
+endmodule

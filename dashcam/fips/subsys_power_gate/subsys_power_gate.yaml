@@ -1,0 +1,11 @@
+power_gate:
+  vendor: synopsys
+  library: foundation
+  name: power_gate
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/POWER_GATE
+    git:  https://github.com/example/power_gate
+
+  dependencies: {}
+

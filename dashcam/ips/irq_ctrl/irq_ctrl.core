@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:ips:irq_ctrl:1.0
+description: irq_ctrl ips Block
+
+filesets:
+  rtl:
+    files:
+      - irq_ctrl.v : {file_type: verilogSource}
+  tb:
+    files:
+      - irq_ctrl_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - irq_ctrl.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: irq_ctrl
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on irq_ctrl from ips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: irq_ctrl
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

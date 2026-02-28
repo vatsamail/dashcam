@@ -1,0 +1,2 @@
+# UPF for irq_ctrl
+create_power_domain PD_IRQ_CTRL -elements {irq_ctrl}

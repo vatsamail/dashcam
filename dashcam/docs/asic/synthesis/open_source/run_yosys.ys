@@ -1,0 +1,7 @@
+read_verilog ../../../../rtl/camera/camera_capture.sv ../../../../rtl/dma/simple_dma.sv ../../../../rtl/mem/simple_sram.sv ../../../../rtl/periphs/irq_ctrl.sv ../../../../rtl/periphs/iomux.sv ../../../../rtl/periphs/sdspi_stub.sv ../../../../rtl/top/dashcam_soc_top.sv
+hierarchy -top dashcam_soc_top
+proc; opt; fsm; opt
+memory; opt
+techmap; opt
+write_json dashcam_soc_top.json
+stat

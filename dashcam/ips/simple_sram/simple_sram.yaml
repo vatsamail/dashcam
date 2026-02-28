@@ -1,0 +1,14 @@
+simple_sram:
+  vendor: arm
+  library: dashcam_ip
+  name: simple_sram
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/SIMPLE_SRAM
+    git:  https://github.com/example/simple_sram
+    core: simple_sram.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

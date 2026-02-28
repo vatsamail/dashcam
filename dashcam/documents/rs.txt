@@ -1,0 +1,221 @@
+Below is a Detailed Requirement Specification (DRS) document for the RISC-V-based Dashcam SoC. This version is organized in a classical requirement-document format, covering scope, functional, performance, security, power, interface, environmental, and acceptance requirements.
+
+1. Introduction
+
+1.1 Purpose
+
+The purpose of this Detailed Requirement Specification (DRS) is to outline and describe all functional and non-functional requirements of the Dashcam SoC project. The SoC is built around an open-source RISC-V processor and integrates multiple subsystems (Video, Audio, Connectivity, and Security) to fulfill the key use cases of an automotive/consumer dashcam product.
+
+1.2 Scope
+	•	System-on-Chip (SoC): Includes CPU, internal interconnect (NoC), IP blocks (camera, display, night vision, etc.), memory interfaces, and power/reset structures.
+	•	Subsystems: Video, Audio, Connectivity, Security.
+	•	Interfaces: External (USB-C, Bluetooth, SSD, camera, display) and internal (interrupts, bus connections).
+	•	Software/Firmware: Lightweight RTOS and drivers controlling subsystem IP blocks.
+
+1.3 References
+	1.	RISC-V ISA Specifications
+	2.	IP-XACT 1685-2014 Specifications (Accellera)
+	3.	UPF (Unified Power Format) Documentation
+	4.	SDC (Synopsys Design Constraints) Documentation
+	5.	Typical real-time operating systems references (e.g., FreeRTOS, Zephyr)
+
+2. Overall Description
+
+2.1 Product Perspective
+
+The Dashcam SoC is intended for in-vehicle or consumer dashcam devices, focusing on:
+	•	Real-time 2K video recording
+	•	Night vision enhancements for low-light conditions
+	•	Voice command recognition
+	•	Bluetooth connectivity
+	•	Storage to a 1TB SSD
+	•	Security features (person, movement, and smoke detection)
+
+2.2 Product Functions
+	1.	RISC-V Core: Runs the real-time operating system and controls all IP blocks.
+	2.	Video Subsystem: Captures 2K video data, applies night vision if needed, and drives an onboard display.
+	3.	Audio Subsystem: Listens for voice commands and outputs alerts through speakers.
+	4.	Connectivity Subsystem: Provides Bluetooth data transfer, USB-C charging, and SSD storage control.
+	5.	Security Subsystem: Detects persons, movement, and smoke, triggering alerts and recordings.
+
+2.3 Operating Environment
+	•	Typical automotive or consumer environment, with operating temperatures typically ranging from -20°C to +85°C (minimum recommended range: -10°C to +70°C).
+	•	Designed to operate from car battery voltage (e.g., 12V, with onboard regulators) or via USB-C power (5V).
+	•	Must withstand typical shock/vibration for a dashcam.
+
+2.4 Design Constraints
+	•	Must be low-power, allowing partial subsystem shutdown (e.g., display off when parked).
+	•	Must use open-source IP for the CPU (RISC-V) and other blocks where possible.
+	•	Must include DFT (Design for Test) features (boundary scan, scan insertion, etc.).
+
+2.5 User Characteristics
+	•	Firmware Developers: Will write drivers for each subsystem, manage RTOS tasks, and integrate user-level applications.
+	•	System Integrators: Will ensure the SoC is properly interfaced with the camera sensor, display panel, microphone, speaker, and external connections.
+	•	End Users: Drivers of vehicles or individuals using dashcams, who expect high reliability (continuous recording) and simple interactions (voice commands, Bluetooth connectivity).
+
+3. Functional Requirements
+
+3.1 CPU (RISC-V Core) Requirements
+	1.	RISC-V ISA Support
+	•	FR-CPU-1: The CPU shall implement a RISC-V core (RV32 or RV64) sufficient for running a lightweight RTOS and dashcam control applications.
+	•	FR-CPU-2: The CPU shall support external interrupt inputs for timers, voice command detection, security alerts, etc.
+	2.	Instruction/Data Access
+	•	FR-CPU-3: The CPU shall provide separate or unified instruction/data bus access to internal or external memory (depending on system design).
+	•	FR-CPU-4: The CPU shall be able to address at least 1GB of memory space for future expansion.
+	3.	Interrupt Mechanism
+	•	FR-CPU-5: The CPU shall respond to interrupts within 10 microseconds at a 100 MHz clock frequency (typical real-time target).
+
+3.2 Video Subsystem Requirements
+	1.	Camera Interface
+	•	FR-VID-1: The camera interface shall support 2K resolution (approximately 2048x1080).
+	•	FR-VID-2: The subsystem shall maintain a minimum of 30 fps (target 60 fps) under normal operation.
+	•	FR-VID-3: A frame_valid signal shall indicate active pixel data windows.
+	2.	Night Vision
+	•	FR-VID-4: Night vision processing shall be automatically enabled or disabled based on ambient light conditions or user configuration.
+	•	FR-VID-5: The night vision block shall be bypassable (i.e., can be powered down or removed from the pipeline if not in use).
+	3.	Display Interface
+	•	FR-VID-6: The display interface shall output processed frames to an onboard or external screen.
+	•	FR-VID-7: The display interface shall support shutting off the screen to conserve power.
+
+3.3 Audio Subsystem Requirements
+	1.	Microphone Input / Voice Processing
+	•	FR-AUD-1: The audio subsystem shall accept 16-bit microphone samples at a 48 kHz sampling rate (minimum).
+	•	FR-AUD-2: The voice command processor shall detect certain keywords with <200 ms latency.
+	2.	Speaker Output
+	•	FR-AUD-3: A speaker_out IP shall drive audible alarms or voice feedback.
+	•	FR-AUD-4: The audio subsystem shall allow volume control or muting from the RTOS.
+
+3.4 Connectivity Subsystem Requirements
+	1.	Bluetooth
+	•	FR-CONN-1: Shall provide a minimum 1 Mbps data rate for streaming or status updates.
+	•	FR-CONN-2: A bt_connected signal shall indicate current connection status.
+	2.	USB Interface
+	•	FR-CONN-3: The SoC shall support USB-C charging, providing necessary signals to a USB-C port controller.
+	•	FR-CONN-4: The interface may optionally support data pass-through in future expansions (not mandatory now).
+	3.	SSD Controller
+	•	FR-CONN-5: Shall support up to 1TB SSD storage (SATA, NVMe, or eMMC bridging).
+	•	FR-CONN-6: Must sustain write speeds of at least 15 MB/s for real-time 2K video recording.
+
+3.5 Security Subsystem Requirements
+	1.	Person Detection
+	•	FR-SEC-1: Must detect a person in the camera view with a simplified logic.
+	•	FR-SEC-2: Must trigger an alert signal (person_alert) to the CPU within 200 ms of detection.
+	2.	Movement Detector
+	•	FR-SEC-3: Must monitor camera frames or sensor input for suspicious movement (theft scenario).
+	•	FR-SEC-4: Must assert movement_alert if unusual movement is detected (mock logic is used in the reference design).
+	3.	Smoke Detector
+	•	FR-SEC-5: Must sense or be able to sense smoke/gas conditions.
+	•	FR-SEC-6: Must assert smoke_alert within 100 ms if smoke is detected (mocked in the reference design).
+	4.	Security Timer
+	•	FR-SEC-7: A parameterizable timer (1-second intervals) shall handle periodic checks or background tasks in parked mode.
+
+3.6 RTOS Integration Requirements
+	1.	Lightweight RTOS
+	•	FR-RTOS-1: The SoC must run a real-time operating system (e.g., FreeRTOS, Zephyr) for scheduling tasks.
+	•	FR-RTOS-2: Must have drivers for each subsystem IP (camera, night vision, display, voice command, SSD, etc.).
+	2.	Interrupt Handling
+	•	FR-RTOS-3: The RTOS shall manage interrupts from the timer IP blocks and security/event detection in a timely manner (sub-10 µs response).
+	•	FR-RTOS-4: The scheduling must ensure real-time video tasks are prioritized over non-critical background tasks.
+
+4. Performance Requirements
+	1.	Video Throughput
+	•	PR-VID-1: Must achieve at least 30 fps at 2K resolution continuously.
+	•	PR-VID-2: Frame drop rate <5% over any 60-second interval.
+	2.	Audio Latency
+	•	PR-AUD-1: Voice commands recognized within 200 ms of spoken trigger.
+	•	PR-AUD-2: Speaker alerts begin within 50 ms of an alert trigger.
+	3.	SSD Write Performance
+	•	PR-SSD-1: Must sustain ~15–30 MB/s for continuous video writes (depending on compression).
+	•	PR-SSD-2: Data path shall not stall CPU tasks for more than 2 ms at a time.
+	4.	Connectivity
+	•	PR-BT-1: Bluetooth shall maintain at least 1 Mbps.
+	•	PR-USB-1: USB charging must supply stable current (≥ 1 A) to power the SoC + associated camera.
+	5.	Security Detection
+	•	PR-SEC-1: Person detection alerts within 200 ms.
+	•	PR-SEC-2: Movement/smoke detection alerts within 100–200 ms if triggered.
+
+5. Security & Safety Requirements
+	1.	Secure Boot (Future)
+	•	SR-1: The SoC may optionally support secure boot verification if an external storage or OTP memory is provided.
+	2.	Data Encryption (Future)
+	•	SR-2: If video data encryption is needed, a hardware or software solution shall be integrated (not mandatory in the baseline design).
+	3.	Events and Alerts
+	•	SR-3: On detecting theft (movement) or forced intrusion, the SoC should initiate a record and raise an audio alert (if configured in firmware).
+	4.	Isolation
+	•	SR-4: If the display or video subsystem is turned off, the security subsystem should remain active in a low-power mode to detect threats.
+
+6. Power and Reset Requirements
+	1.	Multiple Power Domains
+	•	PWR-1: The SoC shall have at least separate power domains for video, audio, connectivity, and security subsystems, plus the CPU domain.
+	•	PWR-2: Each power domain can be powered down when inactive to reduce overall consumption.
+	2.	Reset Strategy
+	•	PWR-3: A global reset line (sys_rst_n) shall initialize all IP blocks at power-up.
+	•	PWR-4: Local resets may be derived or masked inside each subsystem as needed.
+	3.	Low-Power Modes
+	•	PWR-5: Support a “Parked Mode” where video display is off, but security detection (movement, person) remains active.
+	•	PWR-6: CPU frequency scaling or sleep modes are optional but recommended if the RTOS supports it.
+
+7. Interface Requirements
+	1.	External Interfaces
+	•	IF-1: Camera input: 8-bit parallel or MIPI (mock in the reference design).
+	•	IF-2: Display output: parallel or SPI-like, with screen_on signal for power gating.
+	•	IF-3: Microphone input: 16-bit parallel or I2S interface (mock is a direct 16-bit bus).
+	•	IF-4: Bluetooth (serial/packet) or integrated module pins.
+	•	IF-5: USB-C port for power input (and optional data).
+	•	IF-6: SSD port for SATA or NVMe bridging.
+	2.	Internal Bus / NoC
+	•	IF-7: The SoC bus or interconnect shall support enough bandwidth to handle 2K video + CPU traffic concurrently.
+	•	IF-8: Address map must allocate register space for each subsystem IP.
+	3.	Interrupt Lines
+	•	IF-9: Each timer instance, person detector, voice command processor, etc. can raise an interrupt.
+	•	IF-10: The CPU shall include an interrupt controller or handle external interrupts directly.
+
+8. Environmental Requirements
+	1.	Temperature Range
+	•	ENV-1: Operational from -20°C to +85°C (automotive) or at least -10°C to +70°C for consumer applications.
+	2.	Voltage Range
+	•	ENV-2: The design should be tolerant of typical automotive supply fluctuations with onboard regulation.
+	•	ENV-3: Must function properly at standard USB 5 V input as well.
+	3.	Vibration & Shock
+	•	ENV-4: Mechanical design on the board level must withstand typical car vibrations; SoC packaging should be robust (e.g., QFN, BGA).
+
+9. DFT (Design for Test) Requirements
+	1.	Boundary Scan
+	•	DFT-1: The SoC shall support JTAG or IEEE 1149.1 boundary scan to test external connections.
+	2.	Scan Chains
+	•	DFT-2: Flip-flops in the RISC-V core and major subsystems should be scannable if manufacturing test coverage is required.
+	3.	BIST (Optional)
+	•	DFT-3: Memory Built-In Self-Test can be implemented for on-chip RAM arrays (if present).
+
+10. Reliability and Maintainability Requirements
+	1.	Fault Tolerance
+	•	REL-1: In case of SSD errors or overrun, the RTOS driver shall attempt error recovery (retries, logs).
+	•	REL-2: Overflow conditions in camera buffers must be signaled as an error or interrupt.
+	2.	Firmware Upgrades
+	•	REL-3: System firmware updates can be done via Bluetooth or external means, if possible.
+	•	REL-4: The boot process should allow fallback if an update fails (optional in current scope).
+
+11. Acceptance Criteria
+	1.	Functional Demonstration
+	•	AC-1: The SoC must capture 2K video at ≥30 fps, output to display, and optionally store to SSD.
+	•	AC-2: Night vision mode must be demonstrable in low-light scenarios.
+	•	AC-3: Voice commands recognized with sub-200 ms latency (e.g., “record on,” “record off”).
+	•	AC-4: Security alerts triggered for person detection, with an audible or logged alert.
+	2.	Performance Verification
+	•	AC-5: Measured write speed to SSD ≥15 MB/s to ensure real-time video storage.
+	•	AC-6: Bluetooth connectivity tested at ≥1 Mbps throughput.
+	•	AC-7: Each subsystem’s power domain can be disabled/enabled with no major functional disruption.
+	3.	Reliability & Environment
+	•	AC-8: Operates reliably within the specified temperature range.
+	•	AC-9: Passes basic shock and vibration tests at the board level.
+	4.	Compliance
+	•	AC-10: Must provide IP-XACT XML, UPF, SDC files for each IP block and subsystem.
+	•	AC-11: Must pass lint and basic simulation tests with Verilator/Yosys.
+
+12. Additional Information
+	•	Extension: Future revisions may include advanced motion detection, data encryption, and secure boot.
+	•	Collaterals: The SoC shall be accompanied by a user manual describing how to configure each subsystem, a software development kit (SDK) with drivers, and reference firmware to demonstrate key features.
+
+13. Conclusion
+
+This Detailed Requirement Specification outlines the necessary functional, performance, security, power, and interface requirements that the Dashcam SoC must fulfill. Meeting these requirements ensures the SoC can reliably capture and process 2K video in real time, detect security events, interact via Bluetooth, store data to an SSD, and operate under various power-saving modes—all orchestrated by a lightweight RTOS running on an open-source RISC-V core.

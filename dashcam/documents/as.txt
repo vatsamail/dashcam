@@ -1,0 +1,244 @@
+Below is a detailed architectural specification for the RISC-V-based Dashcam SoC we have designed. It covers all major hardware blocks, the interactions among them, power/clock structures, memory aspects, and software/firmware considerations.
+
+1. Introduction
+
+This Dashcam SoC is designed around an open-source RISC-V core and includes four primary subsystems:
+	1.	Video Subsystem
+	2.	Audio Subsystem
+	3.	Connectivity Subsystem
+	4.	Security Subsystem
+
+The SoC supports:
+	•	2K video recording (and display output)
+	•	Night vision enhancement
+	•	Voice command recognition and speaker output
+	•	Bluetooth connectivity
+	•	USB-C charging
+	•	1TB SSD storage controller
+	•	Person/movement/smoke detection for security
+	•	A lightweight RTOS running on the RISC-V core
+
+1.1 Design Goals
+	•	Real-Time Processing: Handle continuous 2K (approximately 2048x1080) video with a reasonable frame rate (30–60 fps).
+	•	Low Power: Includes multiple power domains with the ability to turn off specific subsystems (e.g., screen off for power saving).
+	•	Extendibility: Parameterized IP blocks (e.g., timer_ip) can be used at different frequencies in multiple subsystems.
+	•	Security and Safety: Real-time event detection (person, movement, smoke) plus voice command inputs.
+
+2. Top-Level SoC Architecture
+
+The top-level SoC (in dashcam_top.v) integrates:
+	1.	RISC-V Core: An open-source CPU handling high-level control, running a lightweight RTOS.
+	2.	NoC / Interconnect: Conceptual bus or crossbar that interconnects the CPU with each subsystem. (In the reference design, signals are simply wired; in a production design, this would be a proper bus or crossbar IP.)
+	3.	Video Subsystem (for camera input, night vision processing, and display)
+	4.	Audio Subsystem (for voice command processing and speaker output)
+	5.	Connectivity Subsystem (Bluetooth, USB, SSD controller)
+	6.	Security Subsystem (person, movement, smoke detection)
+	7.	Clocks and Resets: Global system clock and reset, plus local parameterized timers.
+	8.	Power Management: Multiple power domains are possible, e.g., gating off display logic when not in use.
+
+2.1 RISC-V Core
+	•	Core: A minimal RISC-V (e.g., PicoRV32-like or similar).
+	•	Instruction and Data Ports: Instruction fetch (instr_addr, instr_rdata) and data memory (data_addr, data_wdata, data_rdata, data_we).
+	•	Function:
+	•	Runs the lightweight RTOS (e.g., Zephyr, FreeRTOS).
+	•	Schedules tasks for video, audio, security analysis, and connectivity management.
+	•	Handles device-driver interactions with each subsystem.
+
+2.2 Subsystem Overview
+
+2.2.1 Video Subsystem
+	•	camera_if: Captures raw pixel data from the camera sensor. Parameterized for frame dimensions (2K = 2048x1080).
+	•	night_vision: Enhances low-light images by shifting pixel brightness.
+	•	display_if: Outputs processed video to a small integrated display (screen).
+	•	timer_ip (60fps): A parameterized timer generating interrupts/events to help maintain frame rate control or gating logic for frames.
+
+Data Flow:
+	1.	camera_if outputs an 8-bit pixel stream (pixel_data) and a frame_valid signal.
+	2.	If night vision is active, night_vision modifies pixel brightness.
+	3.	The resulting pixel stream goes to display_if for on-screen display.
+	4.	The local timer_ip can trigger frame readouts or synchronization signals as needed.
+
+2.2.2 Audio Subsystem
+	•	voice_command_proc: Monitors microphone input (16-bit samples) for specific keywords/commands.
+	•	speaker_out: Drives alerts or notifications to the speaker.
+	•	timer_ip (48 kHz): Parameterized to support audio sampling rates (48,000 ticks = 1 audio sample interrupt, for instance).
+
+Data Flow:
+	1.	Microphone data arrives (mic_data).
+	2.	voice_command_proc checks for recognized command patterns.
+	3.	A recognized command can trigger an alert (command_detected) or an action in the RTOS.
+	4.	speaker_out can generate audible feedback or alerts.
+
+2.2.3 Connectivity Subsystem
+	•	bluetooth_ctrl: Handles Bluetooth communication (data_in, data_out).
+	•	usb_interface: Manages USB-C connection (used primarily for charging in this design).
+	•	ssd_controller: Interfaces with up to 1TB SSD storage (e.g., NVMe or SATA bridging).
+
+Data Flow:
+	1.	The SoC can send or receive data over Bluetooth (bt_in/out).
+	2.	The USB interface is primarily for charging but could be extended for data.
+	3.	The SSD controller handles read/write operations from the RISC-V core or from other subsystems (for example, storing recorded video).
+
+2.2.4 Security Subsystem
+	•	timer_ip (1s): A timer with a slow resolution used for periodic security checks.
+	•	person_detector: Checks incoming pixel data for known signatures (in this simplified design, if the pixel is 0xFF, triggers detection).
+	•	movement_detector: Monitors movement, typically from sensors or camera frames (mocked as always 0 in this design).
+	•	smoke_detector: Monitors for smoke events (also mocked as always 0 in this design).
+
+Data Flow:
+	1.	Periodically (once per second or based on triggers), the security subsystem samples camera data.
+	2.	If a person is detected, an alert is signaled to the CPU or speaker.
+	3.	Movement or smoke detection triggers events that the CPU can log or cause immediate actions (e.g., record video or sound an alarm).
+
+3. Hardware Blocks in Detail
+
+3.1 RISC-V Core
+	1.	Fetch/Execute: The core increments its program counter, fetches instructions, executes them, and can write data to a memory interface.
+	2.	Interrupt Handling: The RTOS can configure interrupt handlers (e.g., from the timer_ip blocks in each subsystem).
+	3.	Memory Map:
+	•	0x0000_0000: On-chip instruction memory or external flash (project-dependent).
+	•	0x1000_0000: Data memory region.
+	•	0x2000_0000 – 0x200F_FFFF: Subsystem registers (camera, audio, etc.).
+
+(Address map is simplified and can be extended as needed.)
+
+3.2 Timer_IP
+	•	Parameterizable:
+	•	In Video Subsystem: ~60 for ~60 fps.
+	•	In Audio Subsystem: 48,000 for audio sampling rates.
+	•	In Security Subsystem: 1 for 1-second intervals.
+	•	Interrupt: Each instance can trigger an interrupt line to the CPU, letting firmware schedule tasks.
+
+3.3 Camera_IF
+	•	Pixel Generator (Mock): Generates 8-bit pixel samples plus a frame_valid strobe.
+	•	Frame Dimensions: Parameterized to 2048x1080 for 2K. Real implementations would handle the sensor protocol (MIPI CSI or parallel).
+
+3.4 Night Vision
+	•	Pixel Adjustment: Basic thresholding: if the pixel < 128, add 64. Realistically, more complex algorithms (histogram equalization, IR overlay) could be used.
+
+3.5 Display_IF
+	•	Pass-Through: Takes pixel input and a valid signal to drive the display. In a real design, it might include a parallel or SPI-like interface to a small LCD or OLED.
+
+3.6 Voice_Command_Proc
+	•	Keyword/Command Detection:
+	•	Example: Hard-coded check for 0xDEAD.
+	•	A real design might integrate an MFCC (Mel-Frequency Cepstrum Coefficients) pipeline or small neural net.
+
+3.7 Speaker_Out
+	•	Alert Signal: Passes digital on/off signals to a speaker driver. Could be extended to handle PWM or DAC.
+
+3.8 Bluetooth_Ctrl
+	•	Data ECHO in the mock design. In practice, would handle a serial or packet-based interface for configuration or streaming.
+
+3.9 USB_Interface
+	•	Charging: Ties in with a USB-C PHY to manage VBUS for battery charging. Mock design always sets usb_charging = 1.
+
+3.10 SSD_Controller
+	•	Data Pass-Through: For demonstration. Real world: likely uses a protocol for NVMe, eMMC, or SATA.
+
+3.11 Person_Detector
+	•	Simple Trigger if pixel == 0xFF. Could be extended with machine learning or object detection.
+
+3.12 Movement_Detector
+	•	Stub (always 0). Could be replaced with logic analyzing consecutive frames to detect motion.
+
+3.13 Smoke_Detector
+	•	Stub (always 0). Could integrate a sensor input or chemical/gas detection module.
+
+4. Interconnect and Addressing
+
+Although the reference design shows direct connections, a real SoC would incorporate:
+	1.	Bus Fabric or NoC: A crossbar or AXI/AHB bus.
+	2.	Address Decoding: Each subsystem or IP block has a register region.
+	3.	Interrupt Aggregation: Each IP timer or event might raise an interrupt line to an interrupt controller which then signals the CPU.
+
+Example Address Map (illustrative):
+
+0x0000_0000 - 0x0000_FFFF: On-chip Boot ROM
+0x1000_0000 - 0x1000_FFFF: On-chip SRAM
+0x2000_0000 - 0x2000_0FFF: Video Subsystem registers
+0x2000_1000 - 0x2000_1FFF: Audio Subsystem registers
+0x2000_2000 - 0x2000_2FFF: Connectivity Subsystem registers
+0x2000_3000 - 0x2000_3FFF: Security Subsystem registers
+...
+
+(Exact addresses can be refined during integration.)
+
+5. Power and Reset Architecture
+
+5.1 Power Domains
+	1.	PD_SOC: The main SoC domain, including the RISC-V core, bus, basic logic.
+	2.	PD_VIDEO_SUBSYS: Video Subsystem block.
+	3.	PD_AUDIO_SUBSYS: Audio Subsystem block.
+	4.	PD_CONN_SUBSYS: Connectivity Subsystem block.
+	5.	PD_SEC_SUBSYS: Security Subsystem block.
+
+Each IP also has its own power domain in the example UPF files. Real implementations might group them more coarsely:
+	•	Always-On: CPU, minimal logic, security sensor.
+	•	Switchable: Display logic, camera interface, night vision, etc. can be turned off for power saving.
+
+5.2 Reset Architecture
+	•	Global Reset: sys_rst_n from an external source (e.g., PMIC or system reset generator).
+	•	Local Resets: Subsystem-level resets might be derived or masked inside each subsystem.
+
+6. Clocking Scheme
+	•	System Clock (sys_clk): 100 MHz or as chosen for the RISC-V core.
+	•	Derived Clocks: Some IPs might generate internal enable signals or lower-frequency derived clocks.
+	•	Timers: Each timer_ip uses the main clock but increments a counter up to TIMER_RESOLUTION. This approach reduces the need for multiple dedicated clock sources.
+
+7. Firmware and Software
+
+7.1 RTOS
+
+A lightweight RTOS (e.g., Zephyr or FreeRTOS) runs on the RISC-V core. The RTOS provides:
+	•	Task Scheduling:
+	•	One task for video pipeline management (reading frames, writing to SSD if recording).
+	•	One task for audio capturing/voice command recognition.
+	•	One task for connectivity (managing Bluetooth).
+	•	One task for security checks (polling or interrupt-based triggers from the subsystem).
+	•	Interrupt Handlers:
+	•	Each timer_ip triggers a periodic interrupt for its function.
+	•	The voice command processor might raise an interrupt if it finds a match.
+
+7.2 Drivers
+	•	Video Driver: Configures camera interface, sets up night vision mode, controls the display.
+	•	Audio Driver: Manages mic input buffers and the speaker driver.
+	•	Bluetooth/Connectivity Driver: Sends/receives data from the BT controller, detects connection status.
+	•	SSD Driver: Filesystem or block-level driver for video recording (ext4, FAT32, or custom).
+	•	Security Driver: Polls or receives interrupts from person/movement/smoke detectors.
+
+7.3 Use Cases
+	1.	Normal Driving (Daytime):
+	•	Video Subsystem active, streaming camera data to display and optionally saving to SSD.
+	•	Audio Subsystem listening for voice commands.
+	•	Connectivity Subsystem optionally connected via Bluetooth (e.g., for user commands on smartphone).
+	•	Security Subsystem can remain active in background for real-time alerts.
+	2.	Night Driving:
+	•	Night Vision IP is engaged, boosting low-light frames.
+	•	Display can be dimmed or turned off.
+	3.	Parked with Security Mode:
+	•	Display IP can be powered down.
+	•	Security Subsystem remains partially active. Movement detection or person detection triggers recording + alert.
+	4.	Charging:
+	•	USB interface active, battery or system powering.
+
+8. DFT (Design For Test)
+	•	Boundary Scan: The SoC pins can implement a JTAG or IEEE 1149.1 interface.
+	•	Scan Insertion: The flip-flops in the RISC-V core and subsystems can be placed into scan chains for manufacturing test coverage.
+	•	Built-In Self-Test (BIST): Potentially for memory arrays or certain IP blocks, though not elaborated in the current mock design.
+
+9. Future Extensions
+	•	Advanced Movement Detection: Real motion tracking using frame differencing or ML.
+	•	Smoke Sensor Input: Real analog sensor input with ADC.
+	•	Audio Codec: For high-fidelity microphone input or speaker output.
+	•	Encryption Engine: For secure data storage on the SSD.
+	•	Wi-Fi or other connectivity expansions.
+
+10. Summary
+	•	The Dashcam SoC integrates multiple subsystems around an open-source RISC-V processor.
+	•	Each subsystem is parameterizable, facilitating different sampling rates and performance targets.
+	•	Low-power design is supported with multiple power domains and the ability to shut down or scale certain blocks.
+	•	The SoC can record 2K video, enhance low-light footage, recognize voice commands, connect via Bluetooth, store large data to SSD, and detect security threats in real time.
+	•	A lightweight RTOS orchestrates all tasks, ensuring deterministic scheduling for real-time operations.
+
+This concludes the detailed architectural specification, describing how the dashcam SoC is organized, how it meets the functional requirements (2K video, night vision, voice commands, SSD, etc.), and how each subsystem interacts under a single RISC-V CPU umbrella.

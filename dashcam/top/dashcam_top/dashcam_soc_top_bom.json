@@ -1,0 +1,8 @@
+{
+  "name": "dashcam_soc_top",
+  "version": "1.0",
+  "license": "MIT",
+  "files": [
+    "rtl/dashcam_soc_top.sv"
+  ]
+}

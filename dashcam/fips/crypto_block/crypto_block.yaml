@@ -1,0 +1,11 @@
+crypto_block:
+  vendor: synopsys
+  library: foundation
+  name: crypto_block
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/CRYPTO
+    git:  https://github.com/example/crypto_block
+
+  dependencies: {}
+

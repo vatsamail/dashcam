@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+    xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+    vendor="org.opensoc"
+    library="foundation"
+    name="simple_ddr_ctrl"
+    version="1.0"
+>
+    <ipxact:parameters>
+        <ipxact:parameter id="ADDR_WIDTH" value="28"/>
+        <ipxact:parameter id="DATA_WIDTH" value="128"/>
+    </ipxact:parameters>
+
+    <ipxact:model>
+        <ipxact:ports>
+            <ipxact:port>
+                <ipxact:name>clk</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <!-- More ports (reset_n, mem_addr, etc.) omitted for brevity -->
+        </ipxact:ports>
+    </ipxact:model>
+
+    <ipxact:fileSets>
+        <ipxact:fileSet name="rtlFiles">
+            <ipxact:file>
+                <ipxact:name>simple_ddr_ctrl.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+        <ipxact:fileSet name="tbFiles">
+            <ipxact:file>
+                <ipxact:name>tb_simple_ddr_ctrl.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

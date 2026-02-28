@@ -1,0 +1,10 @@
+{
+  "name": "iomux",
+  "version": "1.0",
+  "license": "MIT",
+  "repository": "https://repo.example.com/iomux",
+  "files": [
+    "iomux.v",
+    "iomux_tb.sv"
+  ]
+}

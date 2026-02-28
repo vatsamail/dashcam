@@ -1,0 +1,10 @@
+{
+  "name": "camera_capture",
+  "version": "1.0",
+  "license": "MIT",
+  "repository": "https://repo.example.com/camera_capture",
+  "files": [
+    "camera_capture.v",
+    "camera_capture_tb.sv"
+  ]
+}

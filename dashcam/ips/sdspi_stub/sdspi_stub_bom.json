@@ -1,0 +1,10 @@
+{
+  "name": "sdspi_stub",
+  "version": "1.0",
+  "license": "MIT",
+  "repository": "https://repo.example.com/sdspi_stub",
+  "files": [
+    "sdspi_stub.v",
+    "sdspi_stub_tb.sv"
+  ]
+}

@@ -1,0 +1,11 @@
+simple_ddr_ctrl:
+  vendor: synopsys
+  library: foundation
+  name: simple_ddr_ctrl
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/DDR_CTRL
+    git:  https://github.com/example/simple_ddr_ctrl
+
+  dependencies: {}
+

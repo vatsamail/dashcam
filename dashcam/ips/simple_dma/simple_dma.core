@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:ips:simple_dma:1.0
+description: simple_dma ips Block
+
+filesets:
+  rtl:
+    files:
+      - simple_dma.v : {file_type: verilogSource}
+  tb:
+    files:
+      - simple_dma_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - simple_dma.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: simple_dma
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on simple_dma from ips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: simple_dma
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

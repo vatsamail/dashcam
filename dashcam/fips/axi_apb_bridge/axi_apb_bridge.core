@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:axi_apb_bridge:1.0
+description: axi_apb_bridge fips Block
+
+filesets:
+  rtl:
+    files:
+      - axi_apb_bridge.v : {file_type: verilogSource}
+  tb:
+    files:
+      - axi_apb_bridge_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - axi_apb_bridge.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: axi_apb_bridge
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on axi_apb_bridge from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

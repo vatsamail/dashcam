@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:fips:crypto_block:1.0
+description: crypto_block fips Block
+
+filesets:
+  rtl:
+    files:
+      - crypto_block.v : {file_type: verilogSource}
+  tb:
+    files:
+      - crypto_block_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - crypto_block.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: crypto_block
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on crypto_block from fips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: camera_if
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

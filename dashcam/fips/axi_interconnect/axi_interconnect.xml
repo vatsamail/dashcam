@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+  xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+  vendor="org.opensoc"
+  library="foundation"
+  name="axi_interconnect"
+  version="1.0"
+>
+    <ipxact:parameters>
+        <ipxact:parameter id="NUM_MASTERS" value="2"/>
+        <ipxact:parameter id="NUM_SLAVES" value="2"/>
+        <ipxact:parameter id="ADDR_WIDTH" value="32"/>
+        <ipxact:parameter id="DATA_WIDTH" value="32"/>
+    </ipxact:parameters>
+
+    <ipxact:model>
+        <ipxact:ports>
+            <!-- Master 0 AR channel inputs, for example -->
+            <ipxact:port>
+                <ipxact:name>M_AXI_ACLK</ipxact:name>
+                <ipxact:wire>
+                    <ipxact:direction>in</ipxact:direction>
+                </ipxact:wire>
+            </ipxact:port>
+            <!-- Add other AXI signals as needed -->
+        </ipxact:ports>
+    </ipxact:model>
+
+    <ipxact:fileSets>
+        <ipxact:fileSet name="rtlFiles">
+            <ipxact:file>
+                <ipxact:name>axi_interconnect.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+        <ipxact:fileSet name="tbFiles">
+            <ipxact:file>
+                <ipxact:name>tb_axi_interconnect.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

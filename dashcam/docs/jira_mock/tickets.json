@@ -1,0 +1,7 @@
+[
+  {"id":"DASH-1","epic":"EPIC-1","title":"Implement camera capture block","status":"Done","req":["REQ-CAM-001","REQ-CAM-002"]},
+  {"id":"DASH-2","epic":"EPIC-2","title":"Integrate DMA and IRQ","status":"Done","req":["REQ-DMA-001","REQ-INT-001"]},
+  {"id":"DASH-3","epic":"EPIC-3","title":"Add SD SPI simulation path","status":"Done","req":["REQ-SD-001"]},
+  {"id":"DASH-4","epic":"EPIC-4","title":"Create UVM and smoke test","status":"In Progress","req":["REQ-DV-001"]},
+  {"id":"DASH-5","epic":"EPIC-5","title":"Draft post-silicon checklist","status":"Done","req":["REQ-DFT-001"]}
+]

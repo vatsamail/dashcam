@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
+  <spirit:name>dashcam_soc_csr</spirit:name>
+  <spirit:memoryMaps>
+    <spirit:memoryMap>
+      <spirit:name>csr_map</spirit:name>
+      <spirit:addressBlock>
+        <spirit:name>csr</spirit:name>
+        <spirit:baseAddress>0x10000000</spirit:baseAddress>
+        <spirit:range>0x1000</spirit:range>
+        <spirit:width>32</spirit:width>
+    <spirit:register>
+      <spirit:name>CTRL</spirit:name>
+      <spirit:addressOffset>0x0</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-write</spirit:access>
+      <spirit:description>REQ-CAM-001 camera enable bit0 dma start bit1 sd start bit2 irq enable bit3</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>CAM_STATUS</spirit:name>
+      <spirit:addressOffset>0x4</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-only</spirit:access>
+      <spirit:description>REQ-CAM-002 frame count in bits[15:0]</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>DMA_BASE</spirit:name>
+      <spirit:addressOffset>0x8</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-write</spirit:access>
+      <spirit:description>REQ-DMA-001 destination base offset in SRAM</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>DMA_LEN</spirit:name>
+      <spirit:addressOffset>0xc</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-write</spirit:access>
+      <spirit:description>REQ-DMA-002 transfer length in bytes</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>DMA_STATUS</spirit:name>
+      <spirit:addressOffset>0x10</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-only</spirit:access>
+      <spirit:description>REQ-DMA-003 done bit0 bytes_written bits[31:16]</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>IRQ_STATUS</spirit:name>
+      <spirit:addressOffset>0x14</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-only</spirit:access>
+      <spirit:description>REQ-INT-001 dma done irq pending bit0</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>IRQ_CLEAR</spirit:name>
+      <spirit:addressOffset>0x18</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>write-only</spirit:access>
+      <spirit:description>REQ-INT-002 write 1 to clear dma irq</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>IOMUX_SEL</spirit:name>
+      <spirit:addressOffset>0x1c</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-write</spirit:access>
+      <spirit:description>REQ-IOMUX-001 pinmux selection register</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>SD_STATUS</spirit:name>
+      <spirit:addressOffset>0x20</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-only</spirit:access>
+      <spirit:description>REQ-SD-001 sd write count bits[15:0]</spirit:description>
+    </spirit:register>
+    <spirit:register>
+      <spirit:name>BUILD_INFO</spirit:name>
+      <spirit:addressOffset>0x24</spirit:addressOffset>
+      <spirit:size>32</spirit:size>
+      <spirit:access>read-only</spirit:access>
+      <spirit:description>REQ-GEN-001 build fingerprint</spirit:description>
+    </spirit:register>
+      </spirit:addressBlock>
+    </spirit:memoryMap>
+  </spirit:memoryMaps>
+</spirit:component>

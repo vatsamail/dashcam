@@ -1,0 +1,11 @@
+simple_dma:
+  vendor: synopsys
+  library: foundation
+  name: simple_dma
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/SIMPLE_DMA
+    git:  https://github.com/example/simple_dma
+
+  dependencies: {}
+

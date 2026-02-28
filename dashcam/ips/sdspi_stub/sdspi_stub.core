@@ -1,0 +1,30 @@
+CAPI=2:
+
+name: dashcam:ips:sdspi_stub:1.0
+description: sdspi_stub ips Block
+
+filesets:
+  rtl:
+    files:
+      - sdspi_stub.v : {file_type: verilogSource}
+  tb:
+    files:
+      - sdspi_stub_tb.sv : {file_type: systemVerilogSource}
+  ipxact:
+    files:
+      - sdspi_stub.xml : {file_type: ipxact}
+
+targets:
+    default: &default
+        filesets:
+            - rtl
+        toplevel: sdspi_stub
+    lint:
+        <<: *default
+        default_tool: verilator
+        description: I am going to run linting on sdspi_stub from ips library.
+        tools:
+            verilator:
+                mode: lint-only
+                top_module: sdspi_stub
+                verilator_options: [-Wall, --lint-only, --Wno-fatal]

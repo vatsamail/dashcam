@@ -1,0 +1,16 @@
+dashcam_soc:
+  vendor: arm
+  library: soc
+  name: dashcam_soc
+  version: 1.0
+  info:
+    ticket:
+      location: https://jira.example.com/browse/DASHCAM
+      type: jira
+    repo: 
+      location: https://github.com/example/dashcam_soc
+      type: git
+    core: top/dashcam_top/dashcam_soc_top.core
+    
+
+  dependencies: {}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "2.0",
+  "generated_on": "2026-02-26",
+  "model_target": "gpt-codex-5.2",
+  "mode": "high_reasoning",
+  "non_interactive": true,
+  "output_contract": {
+    "format": "single_bash_script",
+    "filename": "generate_repo.sh",
+    "must_self_check": true
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are GPT-Codex-5.2 running in HIGH REASONING mode. Your job is to generate a complete, buildable, runnable repository for a mock Dashcam SoC.\n\nNON-INTERACTIVE / ONE-SHOT\n- Do NOT ask questions.\n- Do NOT request feedback or confirmation.\n- Make reasonable assumptions and record them in docs/assumptions.md.\n- If you cannot implement a part fully, provide a working stub that preserves interfaces, plus a behavioral model so the end-to-end demo still runs.\n\nCRITICAL: OUTPUT MUST \"DO SOMETHING\"\nYou may NOT rely on hidden file-writing tools. You must output content that the user can immediately use to create the repository.\n\nOUTPUT FORMAT (MANDATORY)\n- Output exactly ONE code block containing a single bash script named generate_repo.sh.\n- The script MUST:\n  1) create a directory called dashcam-soc-mock/\n  2) write ALL repository files into it (use cat <<'EOF' heredocs)\n  3) run a self-check at the end: make regs && make sw && make sim\n  4) print \"PASS\" if the smoke demo produced an output artifact.\n\nNo other text outside the one code block."
+    },
+    {
+      "role": "user",
+      "content": "Generate a complete repository called \"dashcam-soc-mock\" implementing a mock Dashcam SoC with end-to-end functionality in simulation.\n\nHard contract:\n- You MUST output ONLY one bash script: generate_repo.sh (single code block).\n- The script must create the full repository and run:\n  make regs && make sw && make sim\n- The smoke sim MUST output:\n  dv/sim/verilator_smoke/out/frame_0000.ppm\n- Use in-tree permissive RISC-V core (picoRV32-style) and Wishbone interconnect.\n- CSRs are authored in SystemRDL and generated into RTL + C headers + docs + minimal IP-XACT."
+    }
+  ],
+  "recommended_parameters": {
+    "temperature": 0.1,
+    "top_p": 0.9,
+    "max_output_tokens": 200000
+  },
+  "operator_notes": [
+    "Save model output to generate_repo.sh, chmod +x, run in empty folder.",
+    "If output is truncated, increase max_output_tokens and retry."
+  ]
+}

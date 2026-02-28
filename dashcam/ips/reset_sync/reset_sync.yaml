@@ -1,0 +1,14 @@
+reset_sync:
+  vendor: arm
+  library: dashcam_ip
+  name: reset_sync
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/RESET_SYNC
+    git:  https://github.com/example/reset_sync
+    core: reset_sync.core
+    checks:
+      lint:
+        status: pass
+        waiver: []
+  dependencies: {}

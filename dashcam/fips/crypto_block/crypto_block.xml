@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipxact:component
+    xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014"
+    vendor="org.opensoc"
+    library="foundation"
+    name="crypto_block"
+    version="1.0"
+>
+    <ipxact:model>
+        <ipxact:ports>
+            <!-- e.g. clk, reset_n, data_in, data_out, etc. -->
+        </ipxact:ports>
+    </ipxact:model>
+
+    <ipxact:fileSets>
+        <ipxact:fileSet name="rtlFiles">
+            <ipxact:file>
+                <ipxact:name>crypto_block.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+        <ipxact:fileSet name="tbFiles">
+            <ipxact:file>
+                <ipxact:name>tb_crypto_block.v</ipxact:name>
+            </ipxact:file>
+        </ipxact:fileSet>
+    </ipxact:fileSets>
+</ipxact:component>

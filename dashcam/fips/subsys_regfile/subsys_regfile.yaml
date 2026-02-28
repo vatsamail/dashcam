@@ -1,0 +1,11 @@
+subsys_regfile:
+  vendor: synopsys
+  library: foundation
+  name: subsys_regfile
+  version: 1.0
+  info:
+    jira: https://jira.example.com/browse/SUBSYS_REG
+    git:  https://github.com/example/subsys_regfile
+
+  dependencies: {}
+

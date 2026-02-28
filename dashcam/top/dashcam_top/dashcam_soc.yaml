@@ -1,5 +1,5 @@
 dashcam_soc:
-  vendor: arm
+  vendor: my_company
   library: soc
   name: dashcam_soc
   version: 1.0

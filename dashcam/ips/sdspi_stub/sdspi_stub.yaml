@@ -1,5 +1,5 @@
 sdspi_stub:
-  vendor: arm
+  vendor: my_company
   library: dashcam_ip
   name: sdspi_stub
   version: 1.0

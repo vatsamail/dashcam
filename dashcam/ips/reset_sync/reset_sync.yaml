@@ -1,5 +1,5 @@
 reset_sync:
-  vendor: arm
+  vendor: my_company
   library: dashcam_ip
   name: reset_sync
   version: 1.0

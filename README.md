@@ -86,4 +86,4 @@ These are not required by the repo, but are common drop-in choices for similar f
 This is mock, pre-silicon “toy” data intended for internal experimentation and methodology testing. It is provided as-is, without warranties of any kind.
 
 **Contact**
-For access or questions, reach out to `vatsa.prahallada@arm.com`.
+For access or questions, reach out to `vatsamail@gmail.com`.

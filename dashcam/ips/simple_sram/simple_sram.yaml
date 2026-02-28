@@ -1,5 +1,5 @@
 simple_sram:
-  vendor: arm
+  vendor: my_company
   library: dashcam_ip
   name: simple_sram
   version: 1.0

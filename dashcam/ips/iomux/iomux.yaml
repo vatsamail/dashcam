@@ -1,5 +1,5 @@
 iomux:
-  vendor: arm
+  vendor: my_company
   library: dashcam_ip
   name: iomux
   version: 1.0

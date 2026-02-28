@@ -1,5 +1,5 @@
 simple_dma:
-  vendor: arm
+  vendor: my_company
   library: dashcam_ip
   name: simple_dma
   version: 1.0

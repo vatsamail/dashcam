@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ipxact:component xmlns:ipxact="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
-  <ipxact:vendor>arm</ipxact:vendor>
+  <ipxact:vendor>my_company</ipxact:vendor>
   <ipxact:library>dashcam_ip</ipxact:library>
   <ipxact:name>iomux</ipxact:name>
   <ipxact:version>1.0</ipxact:version>
